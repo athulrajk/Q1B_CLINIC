@@ -1,0 +1,1180 @@
+{% load static %}
+<html>
+<head>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@1.0.1/css/themify-icons.css">
+
+    <!-- DataTables CSS -->
+   <!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+</head>
+
+
+<style>
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css");
+@import url(https://unpkg.com/@webpixels/css@1.1.5/dist/index.css);
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter",ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Helvetica Neue","Arial","Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+}
+
+.bg-gradient {
+  background: linear-gradient(135deg, #FF9A9A, #0E9CC4) !important;
+  padding: 3px;
+}
+
+.btn-shadow {
+  box-shadow: 0px 100px 80px rgba(41, 72, 152, 0.05), 0px 64.8148px 46.8519px rgba(41, 72, 152, 0.037963), 0px 38.5185px 25.4815px rgba(41, 72, 152, 0.0303704), 0px 20px 13px rgba(41, 72, 152, 0.025), 0px 8.14815px 6.51852px rgba(41, 72, 152, 0.0196296), 0px 1.85185px 3.14815px rgba(41, 72, 152, 0.012037);
+}
+
+.stories {
+  scrollbar-width: none;
+}
+
+.views, .follows, .likes {
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: 60%;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .views, .follows, .likes {
+    background-size: 85%;
+    background-position: right center;
+  }
+}
+
+.views {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODYiIGhlaWdodD0iNzUiIHZpZXdCb3g9IjAgMCA4NiA3NSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMzcuNDM0IC0yNS4xNTg3QzE0OS4zMTkgLTIxLjI1MTEgMTUzLjA2MSAtNC43MTMxNSAxNTMuMzk2IDcuODM5MzVDMTUzLjY5IDE4Ljg0NTYgMTQzLjUxOSAyNi42NzkyIDEzOS4wODkgMzYuNzgxM0MxMzUuNTQxIDQ0Ljg3MTggMTM1LjUxMSA1NC4wNDMyIDEzMC4wNzggNjEuMDEwOEMxMjMuNDU5IDY5LjQ5ODkgMTE1LjYxMiA3Ny43NjQzIDEwNS4xNzYgODAuMjcxM0M5My42Njc3IDgzLjAzNTkgODAuMzU5IDgyLjM3MTEgNzAuOTg3MyA3NS4yMDYxQzYxLjc3ODkgNjguMTY1OSA2Mi44NDQ0IDU0LjMyOTQgNTcuNjU5MSA0My45NDNDNTEuNTE2NyAzMS42MzkyIDM2Ljk5NTkgMjIuNjY3NyAzNy44ODYgOC45MDE2OEMzOC43OTk0IC01LjIyNDIgNDguNTAzMiAtMjAuOTE4NCA2Mi4xMDMzIC0yNC43ODc4Qzc2LjA4NjIgLTI4Ljc2NiA4Ny4wMzA0IC05LjEzNzg3IDEwMS41NDQgLTkuMjA5MzNDMTE0LjkzIC05LjI3NTI1IDEyNC43MzYgLTI5LjMzMzcgMTM3LjQzNCAtMjUuMTU4N1oiIGZpbGw9IiNGREJDNjQiLz4KPHBhdGggb3BhY2l0eT0iMC4xIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTEyNC40MzQgLTI1LjE1ODdDMTM2LjMxOSAtMjEuMjUxMSAxNDAuMDYxIC00LjcxMzE1IDE0MC4zOTYgNy44MzkzNUMxNDAuNjkgMTguODQ1NiAxMzAuNTE5IDI2LjY3OTIgMTI2LjA4OSAzNi43ODEzQzEyMi41NDEgNDQuODcxOCAxMjIuNTExIDU0LjA0MzIgMTE3LjA3OCA2MS4wMTA4QzExMC40NTkgNjkuNDk4OSAxMDIuNjEyIDc3Ljc2NDIgOTIuMTc2IDgwLjI3MTNDODAuNjY3NyA4My4wMzU5IDY3LjM1OSA4Mi4zNzExIDU3Ljk4NzMgNzUuMjA2MUM0OC43Nzg5IDY4LjE2NTkgNDkuODQ0MyA1NC4zMjk0IDQ0LjY1OTEgNDMuOTQzQzM4LjUxNjcgMzEuNjM5MiAyMy45OTU5IDIyLjY2NzcgMjQuODg2IDguOTAxNjlDMjUuNzk5NCAtNS4yMjQyIDM1LjUwMzIgLTIwLjkxODQgNDkuMTAzMyAtMjQuNzg3OEM2My4wODYyIC0yOC43NjYgNzQuMDMwNCAtOS4xMzc4NyA4OC41NDQgLTkuMjA5MzNDMTAxLjkzIC05LjI3NTI1IDExMS43MzYgLTI5LjMzMzcgMTI0LjQzNCAtMjUuMTU4N1oiIGZpbGw9IiNGREJDNjQiLz4KPC9zdmc+Cg==);
+}
+
+.follows {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODMiIGhlaWdodD0iNzUiIHZpZXdCb3g9IjAgMCA4MyA3NSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yOC41Mzc0IDAuMjMxNTQ1QzI4LjQ3MDYgLTEyLjI3ODYgNDIuOTY1NiAtMjEuMDc2NCA1NC43NjI1IC0yNS4zNzg2QzY1LjEwNjMgLTI5LjE1MDkgNzUuNzYzMyAtMjEuOTkyNCA4Ni43NDkyIC0yMC45OTc5Qzk1LjU0NzUgLTIwLjIwMTUgMTA0LjI1NCAtMjMuMDg1IDExMi41ODYgLTIwLjE0NDVDMTIyLjczNiAtMTYuNTYyMiAxMzMuMDY1IC0xMS43NDQxIDEzOC43NTUgLTIuNjQzNTNDMTQ1LjAyOSA3LjM5MjA1IDE0OC42MjMgMjAuMjIzNiAxNDQuODAzIDMxLjM4NDlDMTQxLjA1IDQyLjM1MTggMTI3LjU5MSA0NS43MzMzIDExOS4zODggNTMuOTQ3M0MxMDkuNjcgNjMuNjc3NSAxMDUuNzcxIDgwLjI5NSA5Mi40MzQ3IDgzLjgyMDVDNzguNzQ5NCA4Ny40MzgxIDYwLjc4NjYgODMuMjE3OCA1Mi44MDA1IDcxLjU0OTJDNDQuNTg5NiA1OS41NTIxIDU5LjcyODggNDIuOTQzNiA1NS4wNTQxIDI5LjIwMzNDNTAuNzQyNiAxNi41MyAyOC42MDg4IDEzLjU5ODEgMjguNTM3NCAwLjIzMTU0NVoiIGZpbGw9IiNGOTg5NkIiLz4KPHBhdGggb3BhY2l0eT0iMC4yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE4LjUzNzQgMy4yMzE1NUMxOC40NzA2IC05LjI3ODYgMzIuOTY1NiAtMTguMDc2NCA0NC43NjI1IC0yMi4zNzg2QzU1LjEwNjMgLTI2LjE1MDkgNjUuNzYzMyAtMTguOTkyNCA3Ni43NDkyIC0xNy45OTc5Qzg1LjU0NzUgLTE3LjIwMTUgOTQuMjUzOCAtMjAuMDg1IDEwMi41ODYgLTE3LjE0NDVDMTEyLjczNiAtMTMuNTYyMiAxMjMuMDY1IC04Ljc0NDE0IDEyOC43NTUgMC4zNTY0NjZDMTM1LjAyOSAxMC4zOTIgMTM4LjYyMyAyMy4yMjM2IDEzNC44MDMgMzQuMzg0OUMxMzEuMDUgNDUuMzUxOCAxMTcuNTkxIDQ4LjczMzMgMTA5LjM4OCA1Ni45NDczQzk5LjY2OTggNjYuNjc3NSA5NS43NzE0IDgzLjI5NSA4Mi40MzQ3IDg2LjgyMDVDNjguNzQ5NCA5MC40MzgxIDUwLjc4NjYgODYuMjE3OCA0Mi44MDA1IDc0LjU0OTJDMzQuNTg5NiA2Mi41NTIxIDQ5LjcyODggNDUuOTQzNiA0NS4wNTQxIDMyLjIwMzNDNDAuNzQyNiAxOS41MyAxOC42MDg4IDE2LjU5ODEgMTguNTM3NCAzLjIzMTU1WiIgZmlsbD0iI0Y5ODk2QiIvPgo8L3N2Zz4K)
+}
+
+.likes {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9Ijc1IiB2aWV3Qm94PSIwIDAgMTAwIDc1IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTg0LjE0MjIgLTIxLjY0MzJDMTA1LjU0NCAtMjcuODIzOCAxMjIuMTQ2IC0zLjAxMTg1IDEzOS40ODIgMTAuOTI2OUMxNTEuNzcxIDIwLjgwNzggMTYzLjYyOCAzMS4wNDE5IDE2OC4zNjMgNDYuMDczMUMxNzMuMDQ1IDYwLjkzNjUgMTcwLjUxMSA3Ni40NDI2IDE2NC42NzUgOTAuOTA2M0MxNTguMTM2IDEwNy4xMTIgMTQ5LjIxNyAxMjIuMjU0IDEzNC4wODQgMTMxLjAzM0MxMTQuNzk3IDE0Mi4yMjEgOTEuNTI2MyAxNTQuMzkyIDcxLjI4NjUgMTQ1LjA4MkM1MC44MTI1IDEzNS42NjYgNDMuNzE4MyAxMTAuMiA0MC4zODM5IDg3LjkzNjNDMzcuNTg2OSA2OS4yNjA5IDQ3Ljg0NTkgNTIuOTE2NSA1NC44NTQ1IDM1LjM2NTVDNjMuMDg5MyAxNC43NDQgNjIuNzgzMiAtMTUuNDc1MSA4NC4xNDIyIC0yMS42NDMyWiIgZmlsbD0iIzg0RThGNCIvPgo8cGF0aCBvcGFjaXR5PSIwLjIiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNzQuMTQyMiAtMjEuNjQzMkM5NS41NDQ1IC0yNy44MjM4IDExMi4xNDYgLTMuMDExODUgMTI5LjQ4MiAxMC45MjY5QzE0MS43NzEgMjAuODA3OCAxNTMuNjI4IDMxLjA0MTkgMTU4LjM2MyA0Ni4wNzMxQzE2My4wNDUgNjAuOTM2NSAxNjAuNTExIDc2LjQ0MjYgMTU0LjY3NSA5MC45MDYzQzE0OC4xMzYgMTA3LjExMiAxMzkuMjE3IDEyMi4yNTQgMTI0LjA4NCAxMzEuMDMzQzEwNC43OTcgMTQyLjIyMSA4MS41MjYzIDE1NC4zOTIgNjEuMjg2NSAxNDUuMDgyQzQwLjgxMjUgMTM1LjY2NiAzMy43MTgzIDExMC4yIDMwLjM4MzkgODcuOTM2M0MyNy41ODY5IDY5LjI2MDkgMzcuODQ1OSA1Mi45MTY1IDQ0Ljg1NDUgMzUuMzY1NUM1My4wODkzIDE0Ljc0NCA1Mi43ODMyIC0xNS40NzUxIDc0LjE0MjIgLTIxLjY0MzJaIiBmaWxsPSIjODRFOEY0Ii8+Cjwvc3ZnPgo=)
+}
+.stories {
+    justify-content: space-between; /* Adjust space between items */
+    overflow-x: scroll; /* Add horizontal scrolling */
+    
+}
+
+.user-profile {
+    margin-right: 10px; /* Set the default margin */
+}
+
+.user-profile:last-child {
+    margin-right: 0; /* Remove margin for the last profile */
+}
+.scrollable-table {
+        height: 400px; /* Set your desired height */
+        overflow-y: auto; /* Enable vertical scrolling */
+        margin-top: 2px;
+    }
+
+    .scrollable-table thead th {
+        position: sticky;
+        margin-top: 2px;
+        top: 0; /* Stick the header to the top */
+        background-color: #e7eaf0;; /* Optional: Set the background color */
+        z-index: 1; /* Ensure header is above other elements */
+    }
+</style>
+
+<body class="flex flex-row">
+  
+  <nav
+    class="md:w-1/3 left-side px-8 py-9 flex-col hidden md:flex md:py-8 md:px-7 xl:w-2/12"
+  >
+  <!-- <h3 style="margin-bottom: -159%;margin-top: -6%;">Q1B Healthcare</h3> -->
+  <h3 style="font-size: 23px;margin-bottom: 25px;margin-top: -15px;"><b><span style="color: #662F8D;">Q1B</span></b> HEALTHCARE</h3>
+
+    <div>
+      <div class="flex items-center mb-20">
+        {% if user.photo %}
+        <img src="{{ user.photo.url }}" alt="User Photo" style="border-radius: 17%; width: 65px; height: 66px;margin-right: 7%;">
+    {% else %}
+        <img src="https://i.postimg.cc/BvNYhMHS/user-img.jpg" alt="Default User Photo" style="border-radius: 17%;margin-right: 7%; width: 65px; height: 66px;;">
+    {% endif %}
+    
+
+        <div>
+          <p class="text-base font-bold text-gray-500">{{user.first_name}}</p>
+          <p class="text-xs font-bold text-slate-400">{{user.designation}}</p>
+          {% if user.user_type == 'D' %}
+          <p class="text-xs font-bold text-slate-400" style="background-color: #ccf5e7 !important;text-align: center;display: inline-block;padding: .2rem .6rem;font-size: 0.75em;font-weight: 600;line-height: 1;color: #00b87a;text-align: center;white-space: nowrap;vertical-align: baseline;border-radius: .375rem;">Doctor</p>
+          {% else %}
+          <p class="text-xs font-bold text-slate-400" style="background-color: #ccf5e7 !important;text-align: center;display: inline-block;padding: .2rem .6rem;font-size: 0.75em;font-weight: 600;line-height: 1;color: #00b87a;text-align: center;white-space: nowrap;vertical-align: baseline;border-radius: .375rem;">Staff</p>
+
+          {% endif %}
+        </div>
+      </div>
+      <ul style="padding-left: 0;">
+        <li class="mb-10">
+          <a class="flex items-center" href="/dashboard">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.07874 16.1354H14.8937"
+                stroke="black"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M2.40002 13.713C2.40002 8.082 3.01402 8.475 6.31902 5.41C7.76502 4.246 10.015 2 11.958 2C13.9 2 16.195 4.235 17.654 5.41C20.959 8.475 21.572 8.082 21.572 13.713C21.572 22 19.613 22 11.986 22C4.35903 22 2.40002 22 2.40002 13.713Z"
+                stroke="black"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span class="text-base font-semibold ml-3">Dashboard</span>
+          </a>
+        </li>
+        <li class="mb-10">
+          <a class="flex items-center" href="patientdashboard">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g opacity="0.4">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2.74982 12.7756C2.74982 5.8196 5.06882 3.5016 12.0238 3.5016C18.9798 3.5016 21.2988 5.8196 21.2988 12.7756C21.2988 19.7316 18.9798 22.0496 12.0238 22.0496C5.06882 22.0496 2.74982 19.7316 2.74982 12.7756Z"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3.02521 9.32399H21.0332"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 13.261H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 13.261H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 13.261H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 17.113H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 17.113H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 17.113H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.033 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M8.02472 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+            <span class="text-base font-semibold text-zinc-500 ml-3"
+              >Patient</span
+            >
+          </a>
+        </li>
+        {% if user.user_type == 'D' %}
+        <li class="mb-10">
+          <a class="flex items-center" href="appointments">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g opacity="0.4">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2.74982 12.7756C2.74982 5.8196 5.06882 3.5016 12.0238 3.5016C18.9798 3.5016 21.2988 5.8196 21.2988 12.7756C21.2988 19.7316 18.9798 22.0496 12.0238 22.0496C5.06882 22.0496 2.74982 19.7316 2.74982 12.7756Z"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3.02521 9.32399H21.0332"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 13.261H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 13.261H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 13.261H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 17.113H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 17.113H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 17.113H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.033 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M8.02472 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+            <span class="text-base font-semibold text-zinc-500 ml-3"
+              >Appointment</span
+            >
+          </a>
+        </li>
+        {% endif %}
+        <li class="mb-10">
+          <a class="flex items-center">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g opacity="0.4">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2.74982 12.7756C2.74982 5.8196 5.06882 3.5016 12.0238 3.5016C18.9798 3.5016 21.2988 5.8196 21.2988 12.7756C21.2988 19.7316 18.9798 22.0496 12.0238 22.0496C5.06882 22.0496 2.74982 19.7316 2.74982 12.7756Z"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3.02521 9.32399H21.0332"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 13.261H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 13.261H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 13.261H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 17.113H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 17.113H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 17.113H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.033 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M8.02472 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+            <span class="text-base font-semibold text-zinc-500 ml-3"
+              >Doctor</span
+            >
+          </a>
+        </li>
+        <li class="mb-10">
+          <a class="flex items-center">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g opacity="0.4">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2.74982 12.7756C2.74982 5.8196 5.06882 3.5016 12.0238 3.5016C18.9798 3.5016 21.2988 5.8196 21.2988 12.7756C21.2988 19.7316 18.9798 22.0496 12.0238 22.0496C5.06882 22.0496 2.74982 19.7316 2.74982 12.7756Z"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3.02521 9.32399H21.0332"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 13.261H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 13.261H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 13.261H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 17.113H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 17.113H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 17.113H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.033 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M8.02472 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+            <span class="text-base font-semibold text-zinc-500 ml-3"
+              >Administration</span
+            >
+          </a>
+        </li>
+        <li class="mb-10">
+          <a class="flex items-center">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g opacity="0.4">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2.74982 12.7756C2.74982 5.8196 5.06882 3.5016 12.0238 3.5016C18.9798 3.5016 21.2988 5.8196 21.2988 12.7756C21.2988 19.7316 18.9798 22.0496 12.0238 22.0496C5.06882 22.0496 2.74982 19.7316 2.74982 12.7756Z"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3.02521 9.32399H21.0332"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 13.261H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 13.261H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 13.261H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 17.113H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 17.113H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 17.113H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.033 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M8.02472 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+            <span class="text-base font-semibold text-zinc-500 ml-3"
+              >EMR</span
+            >
+          </a>
+        </li>
+        <li class="mb-10">
+          <a class="flex items-center">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g opacity="0.4">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2.74982 12.7756C2.74982 5.8196 5.06882 3.5016 12.0238 3.5016C18.9798 3.5016 21.2988 5.8196 21.2988 12.7756C21.2988 19.7316 18.9798 22.0496 12.0238 22.0496C5.06882 22.0496 2.74982 19.7316 2.74982 12.7756Z"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3.02521 9.32399H21.0332"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 13.261H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 13.261H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 13.261H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 17.113H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 17.113H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 17.113H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.033 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M8.02472 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+            <span class="text-base font-semibold text-zinc-500 ml-3"
+              >Reports</span
+            >
+          </a>
+        </li>
+        <li class="mb-10">
+          <a class="flex items-center">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g opacity="0.4">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2.74982 12.7756C2.74982 5.8196 5.06882 3.5016 12.0238 3.5016C18.9798 3.5016 21.2988 5.8196 21.2988 12.7756C21.2988 19.7316 18.9798 22.0496 12.0238 22.0496C5.06882 22.0496 2.74982 19.7316 2.74982 12.7756Z"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3.02521 9.32399H21.0332"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 13.261H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 13.261H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 13.261H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.4285 17.113H16.4375"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12.0291 17.113H12.0381"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.62142 17.113H7.63042"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16.033 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M8.02472 2.05009V5.31209"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+            <span class="text-base font-semibold text-zinc-500 ml-3"
+              >Access</span
+            >
+          </a>
+        </li>
+      </ul>
+      <hr class="mb-5" />
+
+  
+    </div>
+    <a class="flex items-center" href="logout">
+      <svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M13 17V19H5V5H13V7H7V17H13ZM19 12L24 7V17L19 12Z"
+    fill="#696969"
+  />
+</svg>
+      <span class="ml-3 text-base font-semibold">Logout</span>
+</a>
+  </nav>
+
+  <section
+    class="w-full p-8 bg-gray-50 md:w-3/3 md:p-8 md:min-content xl:w-12/12"
+  >
+  {% block content %}
+  
+    {% endblock %}
+
+
+  </section>
+
+
+
+  <!-- <section class="hidden px-5 py-9 xl:flex xl:flex-col xl:w-3/12">
+    <div class="flex justify-between items-center mb-16">
+      <div>
+        <p class="text-lg font-bold text-gray-900">Hi, Omid</p>
+        <p class="text-sm text-zinc-500 font-semibold">Good morning!</p>
+      </div>
+      <div>
+        <button class="border-2 border-gray-200 rounded-xl p-2.5 btn-shadow">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15.9394 12.413H15.9484"
+              stroke="black"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M11.9304 12.413H11.9394"
+              stroke="black"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M7.9214 12.413H7.9304"
+              stroke="black"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M19.071 19.0698C16.0159 22.1264 11.4896 22.7867 7.78631 21.074C7.23961 20.8539 3.70113 21.8339 2.93334 21.067C2.16555 20.2991 3.14639 16.7601 2.92631 16.2134C1.21285 12.5106 1.87411 7.9826 4.9302 4.9271C8.83147 1.0243 15.1698 1.0243 19.071 4.9271C22.9803 8.83593 22.9723 15.1681 19.071 19.0698Z"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <button
+          class="border-2 border-gray-200 rounded-xl p-2.5 relative btn-shadow"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M11.9962 2.51419C7.56192 2.51419 5.63525 6.52943 5.63525 9.18371C5.63525 11.1675 5.92287 10.5837 4.82477 13.0037C3.48382 16.4523 8.8762 17.8618 11.9962 17.8618C15.1152 17.8618 20.5076 16.4523 19.1676 13.0037C18.0695 10.5837 18.3572 11.1675 18.3572 9.18371C18.3572 6.52943 16.4295 2.51419 11.9962 2.51419Z"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M14.306 20.5122C13.0117 21.9579 10.9927 21.975 9.68604 20.5122"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <svg
+            width="10"
+            height="10"
+            viewBox="0 0 10 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="absolute right-2.5 top-2"
+          >
+            <circle
+              cx="5"
+              cy="5"
+              r="4"
+              fill="#F9BE7A"
+              stroke="#5E25BC"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="flex flex-col items-center mt-3.5">
+      <div class="avatar relative mb-6">
+        <img
+          src="https://images.unsplash.com/photo-1579105728744-9d6b14a45389?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=683&q=80"
+          alt="Omid Armin"
+          class="w-14 h-14 object-cover rounded-lg blur-3xl absolute inset-x-0 bottom-0 -z-10"
+        />
+        <img
+          src="https://images.unsplash.com/photo-1579105728744-9d6b14a45389?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=683&q=80"
+          alt="Omid Armin"
+          class="w-24 h-24 object-cover rounded-lg"
+        />
+      </div>
+      <p class="mt-1.5 font-bold text-lg text-[#11243D] mb-3">Omid Armin</p>
+      <p class="text-xs font-semibold text-zinc-500 mb-6">
+        UI/UX Designer @Redwhale
+      </p>
+      <div class="mt-0.5 w-full flex justify-evenly items-center mb-6">
+        <div class="flex flex-col items-center">
+          <p class="text-base text-[#11243D] font-bold">786K</p>
+          <p class="text-zinc-500 font-semibold text-sm">Followers</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <p class="text-base text-[#11243D] font-bold">298</p>
+          <p class="text-zinc-500 font-semibold text-sm">Following</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <p class="text-base text-[#11243D] font-bold">438</p>
+          <p class="text-zinc-500 font-semibold text-sm">Posts</p>
+        </div>
+      </div>
+      <div class="flex mt-0.5 w-full justify-evenly items-center mb-8">
+        <button
+          class="bg-[#4F46BA] py-4 px-7 rounded-xl text-white font-semibold"
+        >
+          View Profile
+        </button>
+        <button
+          class="border-2 border-gray-200 rounded-xl py-4 px-7 text-[#11243D] font-semibold"
+        >
+          Edit Profile
+        </button>
+      </div>
+   
+    
+    </div>
+  </section> -->
+</body>
+
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+
+
+function loadUsers(users) {
+    const storiesContainer = document.querySelector(".stories");
+    const defaultImageUrl = 'https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80';
+    // const imageUrl = user.photo ? user.photo : defaultImageUrl;
+    // Clear previous content
+    storiesContainer.innerHTML = '';
+
+    // Iterate through users and construct HTML
+    users.forEach((user) => {
+      let imageUrl = user.photo ? '/media/' + user.photo : defaultImageUrl;
+
+        
+        const userHtml = `
+            <div class="user-profile flex flex-col items-center">
+                <div class="w-14 h-14 rounded-full mb-2">
+                    <img
+                        src="${imageUrl}"
+                        alt="${user.name}"
+                        class="w-full h-full object-cover rounded-full"
+                    />
+                </div>
+                <p class="text-xs text-zinc-500 font-semibold">${user.name}</p>
+            </div>
+        `;
+
+        storiesContainer.innerHTML += userHtml;  // Append user HTML to storiesContainer
+    });
+}
+
+// Example usage:
+// Replace with actual AJAX call to fetch users from Django
+$.ajax({
+    url: '/fetch-users/',  // Update with correct URL
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+        console.log(data);  // Verify data structure
+        loadUsers(data);     // Call loadUsers function with fetched data
+    },
+    error: function(xhr, status, error) {
+        console.error('Error fetching users:', error);
+    }
+});
+
+
+// chart js
+
+function fetchAndRenderChart() {
+    console.log("Starting to fetch daily chart data...");
+    fetch('/patient-count-per-day/')
+        .then(response => {
+            console.log("Received response from /patient-count-per-day/", response);
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Data received:", data);
+
+            // Extract data from JSON response
+            const labels = data.labels;
+            const counts = data.datasets[0].data;
+            const heading = data.heading;
+            const totalPatients = data.total_patients;
+
+            // Render chart using Chart.js
+            const ctx = document.getElementById('dailyChartnew').getContext('2d');
+            new Chart(ctx, {
+                type: 'line', // Set chart type to doughnut
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Number of Patients per Day',
+                        data: counts,
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2,
+                        tension: 0.4, // Adds a curve to the line
+                        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                    }]
+                },
+                options: {
+                    responsive: true, // Make the chart responsive
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: 'Arial, sans-serif',
+                                    style: 'italic'
+                                },
+                                color: '#333'
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(0,0,0,0.7)',
+                            titleFont: {
+                                size: 16,
+                                weight: 'bold',
+                                family: 'Arial, sans-serif'
+                            },
+                            bodyFont: {
+                                size: 14,
+                                family: 'Arial, sans-serif'
+                            },
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Days',
+                                font: {
+                                    size: 16,
+                                    family: 'Arial, sans-serif',
+                                    weight: 'bold'
+                                }
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    family: 'Arial, sans-serif'
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Patients',
+                                font: {
+                                    size: 16,
+                                    family: 'Arial, sans-serif',
+                                    weight: 'bold'
+                                }
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    family: 'Arial, sans-serif'
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500, // Animation duration in milliseconds
+                        easing: 'easeInOutBounce', // Easing function
+                    }
+                }
+            });
+
+            // Update heading and total patients display
+            document.getElementById('chartHeading').innerText = heading;
+            document.getElementById('totalPatients').innerText = 'Total Patients: ' + totalPatients;
+        })
+        .catch(error => {
+            console.error('Error fetching or parsing data:', error);
+        });
+}
+
+// Call the function to fetch and render chart on page load
+document.addEventListener('DOMContentLoaded', function() {
+    fetchAndRenderChart();
+});
+
+</script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- jQuery -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>

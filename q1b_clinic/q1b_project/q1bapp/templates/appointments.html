@@ -1,0 +1,505 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+<!-- DataTables JS -->
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<style>
+[type="text"], input:where(:not([type])), [type="email"], [type="url"], [type="password"], [type="number"], [type="date"], [type="datetime-local"], [type="month"], [type="search"], [type="tel"], [type="time"], [type="week"], [multiple], textarea, select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  border: 1px solid #e7eaf0;
+  border-width: 1px;
+  border-radius: 0px;
+  padding-top: 0.5rem;
+  padding-right: 0.75rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  --tw-shadow: 0 0 #0000;
+}
+    /* Table styles */
+    #patientTable tbody td {
+        padding: 1rem 1.5rem;
+        background-color: var(--x-table-bg);
+        box-shadow: inset 0 0 0 9999px var(--x-table-accent-bg);
+        border-bottom: 1px solid #fafafa;
+    }
+    #patientTable th {
+        padding: 1rem 1.5rem;
+        background-color: #e7eaf0;
+    }
+    #patientTable_paginate{
+        margin: 1%;
+    }
+
+    /* Card styles */
+    .patient-card {
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin: 1rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        width: 21%;
+        margin-left: 33px;
+    }
+    .patient-card .card-header {
+        font-weight: bold;
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .card-item {
+        flex: 1 0 30%; /* Three cards per row */
+        margin: 0.5rem;
+    }
+</style>
+
+<header class="bg-surface-primary border-bottom pt-6">
+    <div class="container-fluid">
+        <div class="mb-npx">
+            <div class="row align-items-center">
+                <div class="col-sm-6 col-12 mb-4 mb-sm-0">
+                    <h1 class="h2 mb-0 ls-tight">Appointment</h1>
+                </div>
+                <div class="col-sm-6 col-12 text-sm-end">
+                    <div class="mx-n1">
+                        <!-- <a href="#" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                            <span class="pe-2"><i class="bi bi-pencil"></i></span>
+                            <span>Edit</span>
+                        </a> -->
+                        <a href="#" class="btn d-inline-flex btn-sm btn-primary mx-1" data-toggle="modal" data-target="#addappointment" id="createAppointBtn">
+                            <!-- <span class="pe-2"><i class="bi bi-plus"></i></span> -->
+                            <span>Book Appointment</span>
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+            <ul class="nav nav-tabs mt-4 overflow-x border-0">
+                {% comment %} <li class="nav-item"><a href="#" class="nav-link active">All files</a></li>
+                <li class="nav-item"><a href="#" class="nav-link font-regular">Shared</a></li>
+                <li class="nav-item"><a href="#" class="nav-link font-regular">File requests</a></li> {% endcomment %}
+            </ul>
+        </div>
+    </div>
+</header><br>
+
+<div class="row g-6 mb-6">
+  <div class="col-xl-3 col-sm-6 col-12">
+      <div class="card shadow border-0">
+          <div class="card-body">
+              <div class="row">
+                  <div class="col">
+                      <span class="h6 font-semibold text-muted text-sm d-block mb-2">Online Patient</span>
+                      <span class="h3 font-bold mb-0">{{online_patient}}</span>
+                  </div>
+                  <div class="col-auto">
+                      <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
+                          <i class="bi bi-credit-card"></i>
+                      </div>
+                  </div>
+              </div>
+              <div class="mt-2 mb-0 text-sm">
+                  <!-- <span class="badge badge-pill bg-soft-success text-success me-2"><i class="bi bi-arrow-up me-1"></i>13%</span> -->
+                  <span class="text-nowrap text-xs text-muted">Since last month</span>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="col-xl-3 col-sm-6 col-12">
+      <div class="card shadow border-0">
+          <div class="card-body">
+              <div class="row">
+                  <div class="col">
+                      <span class="h6 font-semibold text-muted text-sm d-block mb-2">Offline Patient</span>
+                      <span class="h3 font-bold mb-0">{{offline_patient}}</span>
+                  </div>
+                  <div class="col-auto">
+                      <div class="icon icon-shape bg-primary text-white text-lg rounded-circle">
+                          <i class="bi bi-people"></i>
+                      </div>
+                  </div>
+              </div>
+              <div class="mt-2 mb-0 text-sm">
+                  <!-- <span class="badge badge-pill bg-soft-success text-success me-2"><i class="bi bi-arrow-up me-1"></i>30%</span> -->
+                  <span class="text-nowrap text-xs text-muted">Since last month</span>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="col-xl-3 col-sm-6 col-12">
+      <div class="card shadow border-0">
+          <div class="card-body">
+              <div class="row">
+                  <div class="col">
+                      <span class="h6 font-semibold text-muted text-sm d-block mb-2">Total Patient</span>
+                      <span class="h3 font-bold mb-0">{{total_patient}}</span>
+                  </div>
+                  <div class="col-auto">
+                      <div class="icon icon-shape bg-info text-white text-lg rounded-circle">
+                          <i class="bi bi-clock-history"></i>
+                      </div>
+                  </div>
+              </div>
+              <div class="mt-2 mb-0 text-sm">
+                  <!-- <span class="badge badge-pill bg-soft-danger text-danger me-2"><i class="bi bi-arrow-down me-1"></i>-5%</span> -->
+                  <span class="text-nowrap text-xs text-muted">Since last month</span>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="col-xl-3 col-sm-6 col-12">
+      <div class="card shadow border-0">
+          <div class="card-body">
+              <div class="row">
+                  <div class="col">
+                      <span class="h6 font-semibold text-muted text-sm d-block mb-2">Today Appointments</span>
+                      <span class="h3 font-bold mb-0">{{total_appointment}}</span>
+                  </div>
+                  <div class="col-auto">
+                      <div class="icon icon-shape bg-warning text-white text-lg rounded-circle">
+                          <i class="bi bi-minecart-loaded"></i>
+                      </div>
+                  </div>
+              </div>
+              <div class="mt-2 mb-0 text-sm">
+                  <!-- <span class="badge badge-pill bg-soft-success text-success me-2"><i class="bi bi-arrow-up me-1"></i>10%</span> -->
+                  <span class="text-nowrap text-xs text-muted">Since last month</span>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<!-- table -->
+
+
+<div class="row g-6 mb-6">
+    <section>
+        <div class="card shadow border-0 mb-7">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="header-left">
+                    <h5 class="mb-0">All Appointments List</h5>
+                </div>
+                
+                <div class="header-right">
+                    <div class="input-group" style="border: 1px solid gainsboro;">
+                        <input type="text" id="tableSearch" placeholder="Search" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+                        <div class="input-group-append">
+                            <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="table-responsive" id="tableView">
+                <table id="patientTable" class="table table-hover table-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Doctor</th>
+                            <th>Speciality</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in appointments %}
+                        <tr>
+                            <td>{{ app.pateint_id.firstname_patient_name }}</td>
+                            <td>{{ app.doctor.name }}</td>
+                            <td>{{ app.speciality }}</td>
+                            <td>{{ app.location }}</td>
+                            <td>{{ app.date }}</td>
+                            <td>{{ app.slot }}</td>
+
+                            <td class="text-end">
+                                <a href="#" class="btn btn-sm btn-neutral delete-btn" data-id="{{ app.id }}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-container" id="cardView" style="display: none;">
+                {% for patient in patient %}
+                <div class="patient-card card-item">
+                    {% if patient.photo %}
+                    <img src="{{ patient.photo.url }}" class="avatar avatar-sm rounded-circle mx-auto d-block mb-3" style="width: 100px; height: 100px;" alt="Patient Photo">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80" class="avatar avatar-sm rounded-circle mx-auto d-block mb-3" style="width: 150px; height: 150px;" alt="Patient Photo">
+
+                    {% endif %}
+                    <div class="card-header" style="text-align: center;font-size: 27px;">{{ patient.firstname_patient_name }}</div>
+                    <div style="margin-left: 10%;"><strong>Name:</strong> {{ patient.firstname_patient_name }}</div>
+                    <div style="margin-left: 10%;"><strong>Doctor:</strong> {{ patient.doctor }}</div>
+                    <div style="margin-left: 10%;"><strong>Referral:</strong> {{ patient.referredBy }}</div>
+                    <div style="margin-left: 10%;"><strong>Start Date:</strong> {{ patient.created_at }}</div>
+                    <div style="margin-left: 10%;"><strong>Register Method:</strong>
+                        {% if patient.register_method == 'online' %}
+                        <span class="badge badge-lg badge-dot"><i class="bg-success"></i>Online</span>
+                        {% elif patient.register_method == 'offline' %}
+                        <span class="badge badge-lg badge-dot"><i class="bg-warning"></i>Offline</span>
+                        {% else %}
+                        <span class="badge badge-lg badge-dot"><i class="bg-warning"></i>-----</span>
+                        {% endif %}
+                    </div>
+                    <div class="mt-3" style="text-align: center;">
+                        <a href="#" class="btn btn-link edit-btn text-dark" data-patient-id="{{ patient.id }}" data-toggle="modal" data-target="#editPatientModal">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="#" class="btn btn-sm btn-neutral">View</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+
+
+<div class="modal fade" id="addappointment" tabindex="-1" role="dialog" aria-labelledby="addappointmentLabel" aria-hidden="true">    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Book Appointment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+                <div style="padding: 20px; border-radius: 8px; width: 100%;">
+                    <form method="post" id="appointmentForm">
+                        {% csrf_token %}
+                        <div class="row" style="margin-bottom: 6%;">
+                        <div class="col-md-12">
+                            <label for="doctor" class="form-label">Select Patient</label>
+                            <select id="pateint_id" name="pateint_id" class="form-control">
+                                {% for patient in patient_list %}
+                                <option value="{{patient.id}}">{{patient.firstname_patient_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                        <div class="row " style="margin-bottom: 6%;">
+                            <div class="col-md-6">
+                                <label for="speciality" class="form-label">Select Speciality</label>
+                                <select id="speciality" name="speciality" class="form-control">
+                                    <option value="ayurveda">Ayurveda</option>
+                                    <option value="Homeopathy">Homeopathy</option>
+                                    <option value="Unani">Unani</option>
+                                    <option value="Naturopathic">Naturopathic</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="doctor" class="form-label">Select Doctor</label>
+                                <select id="doctor" name="doctor" class="form-control">
+                                    {% for doc in doctor_list %}
+                                    <option value="{{doc.id}}">Dr. {{doc.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row " style="margin-bottom: 6%;">
+                            <div class="col-md-6">
+                                <label for="consultation_type" class="form-label">Consultation Type</label>
+                                <select id="consultation_type" name="consultation_type" class="form-control">
+                                    <option value="Online">Online</option>
+                                    <option value="Offline">Offline</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="location" class="form-label">Location</label>
+                        <select id="location" name="location" class="form-control">
+                            <option value="Omassery">Omassery</option>
+                            <option value="Koduvally">Koduvally</option>
+                        </select>
+                            </div>
+                        </div>
+
+                        <div class="row " style="margin-bottom: 6%;">
+                            <div class="col-md-6">
+                                <label for="date" class="form-label">Date</label>
+                        <input type="date" id="date" name="date" value="2024-07-10" class="form-control">
+    
+                            </div>
+                            <div class="col-md-6">
+                                <label for="slot" class="form-label">Available Slot</label>
+                                <input type="time" id="slot" name="slot" value="" class="form-control">
+
+                            </div>
+                        </div>
+                        <button type="button" class="btn d-inline-flex btn-sm btn-secondary mx-1" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn d-inline-flex btn-sm btn-primary mx-1">Add</button>
+                    </form>
+                    <div id="validation-messages" class="alert alert-danger" role="alert" style="display: none;margin-top: 3%;"></div>
+                    
+                </div>
+    </div>
+  </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+<div id="storiesContainer">
+    <!-- Content here -->
+</div>
+
+<!-- Ensure jQuery and Bootstrap JS are included -->
+
+<script>
+    $(document).ready(function() {
+    // Your JavaScript code here
+    var storiesContainer = document.getElementById('storiesContainer');
+    // Further code using storiesContainer
+});
+
+    $(document).ready(function () {
+
+        $('.delete-btn').click(function(e) {
+            e.preventDefault();
+            var appId = $(this).data('id');
+            if (confirm("Are you sure you want to delete this appointment?")) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/delete_appointment/',  // Replace with your delete endpoint URL
+                    data: {
+                        'app_id': appId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        // Remove row from table on successful deletion
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('An error occurred while deleting the appointment.');
+                    }
+                });
+            }
+        });
+
+        // Initialize DataTable
+        var table = $('#patientTable').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": false,
+            "autoWidth": false,
+            "responsive": true,
+            "language": {
+                "paginate": {
+                    "previous": "<i class='fas fa-angle-left'></i>",
+                    "next": "<i class='fas fa-angle-right'></i>"
+                }
+            }
+        });
+
+        // Toggle view between table and card
+        $('#toggleViewBtn').on('click', function () {
+            $('#tableView').toggle();
+            $('#cardView').toggle();
+        });
+
+        // Search functionality
+        $('#tableSearch').on('keyup', function () {
+            var value = $(this).val().toLowerCase();
+            $('#patientTable tbody tr').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+
+            $('#cardView .patient-card').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+
+    // add patient
+
+
+    function patientValidation() {
+    let error = false;
+    const validationMessages = $('#validation-messages');
+    validationMessages.hide();
+
+    const fields = [
+        { id: 'pateint_id', message: 'Please Enter Patient ID' },
+        { id: 'speciality', message: 'Please Enter speciality' },
+        { id: 'doctor', message: 'Please Enter Doctor' },
+        { id: 'consultation_type', message: 'Please Enter Consultation tType' },
+        { id: 'location', message: 'Please Enter Location' },
+        { id: 'date', message: 'Please Enter Date' },
+        { id: 'slot', message: 'Please Enter Slot' },
+    ];
+
+    for (let field of fields) {
+        if ($(`#${field.id}`).val() === '') {
+            validationMessages.show().html(field.message);
+            error = true;
+            break;
+        }
+    }
+
+    return !error;
+}
+
+
+$('#appointmentForm').on('submit', function(event) {
+    event.preventDefault();
+    if (patientValidation()) {
+        $.ajax({
+        url: '{% url "save_appointment" %}',
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function(response) {
+            if (response.success) {
+                            location.reload();
+                        } else {
+                            let errors = '<div id="error-messages">';
+                            for (let field in response.errors) {
+                                errors += '<p>' + field + ': ' + response.errors[field] + '</p>';
+                            }
+                            errors += '</div>';
+                            $('#form-messages').html(errors);
+                        }
+        }
+    });
+
+    }
+    
+});
+});
+
+
+
+// clear popup values
+ // Handler for clearing form values
+    $('#createAppointBtn').on('click', function() {
+            $('#appointmentForm').trigger('reset');
+
+    });
+
+
+
+</script>
+{% endblock %}
